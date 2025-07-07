@@ -61,6 +61,7 @@ help:
   openGui: "&d  /njm gui&5 - Pour ouvrir l'interface graphique"
   viewInfo: "&d  /njm info [joueur]&5 - Pour voir les informations d'un autre joueur"
   reloadPlugin: "&d  /njm reload&5 - Recharger le plugin"
+  setLanguage: "Utilisez /njm language pour définir votre langue"
   currentJoinMessage: "&aVotre message de bienvenue actuel: "
   currentLeaveMessage: "&aVotre message de départ actuel: "
   usingDefaultMessage: "&7Utilise le message par défaut"

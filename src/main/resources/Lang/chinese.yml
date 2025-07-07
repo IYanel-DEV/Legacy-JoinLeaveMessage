@@ -64,6 +64,7 @@ help:
   openGui: "&d  /njm gui&5 - 打开GUI界面"
   viewInfo: "&d  /njm info [玩家]&5 - 查看其他玩家的信息"
   reloadPlugin: "&d  /njm reload&5 - 重新加载插件"
+  setLanguage: "使用 /njm language 来设置你的语言"
   currentJoinMessage: "&a您当前的加入消息: "
   currentLeaveMessage: "&a您当前的离开消息: "
   usingDefaultMessage: "&7使用默认消息"

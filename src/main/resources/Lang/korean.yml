@@ -67,6 +67,7 @@ help:
   openGui: "&d  /njm gui&5 - GUI 열기"
   viewInfo: "&d  /njm info [플레이어]&5 - 다른 플레이어 정보 보기"
   reloadPlugin: "&d  /njm reload&5 - 플러그인 다시로드"
+  setLanguage: "/njm language 명령어로 언어를 설정하세요"
   currentJoinMessage: "&a현재 입장 메시지: "
   currentLeaveMessage: "&a현재 퇴장 메시지: "
   usingDefaultMessage: "&7기본 메시지 사용 중"

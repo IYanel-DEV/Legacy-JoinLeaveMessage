@@ -62,6 +62,7 @@ help:
   openGui: "&d  /njm gui&5 - GUIを開きます"
   viewInfo: "&d  /njm info [プレイヤー]&5 - 他のプレイヤーの情報を表示します"
   reloadPlugin: "&d  /njm reload&5 - プラグインをリロードします"
+  setLanguage: "/njm language を使用して言語を設定します"
   currentJoinMessage: "&a現在の入室メッセージ: "
   currentLeaveMessage: "&a現在の退出メッセージ: "
   usingDefaultMessage: "&7デフォルトメッセージを使用しています"

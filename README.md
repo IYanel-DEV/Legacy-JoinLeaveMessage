@@ -13,4 +13,4 @@ NewJoinMessage is a versatile plugin designed to provide customizable join and l
 
 
 
-[![Image Description](https://i.ibb.co/HDWgTmGC/Untitled-1.png)
+![Image Description](https://i.ibb.co/HDWgTmGC/Untitled-1.png)

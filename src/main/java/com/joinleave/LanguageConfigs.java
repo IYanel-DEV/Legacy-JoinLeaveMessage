@@ -5,6 +5,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class LanguageConfigs {
 
@@ -15,62 +18,49 @@ public class LanguageConfigs {
     }
 
     public void loadConfigs() {
-        // Ensure the directories exist
         File langDir = new File(plugin.getDataFolder(), "Lang");
         if (!langDir.exists()) {
             langDir.mkdirs();
         }
 
-        // Load or create DataLang.yml
-        File dataLangFile = new File(langDir, "DataLang.yml");
-        if (!dataLangFile.exists()) {
-            plugin.saveResource("Lang/DataLang.yml", false); // Copy from resources if not exists
+        // Ensure DataLang.yml exists
+        saveResourceIfMissing("Lang/DataLang.yml");
+
+        // Ensure all language files exist
+        String[] languages = {
+                "english", "germany", "french", "spanish", "italian",
+                "chinese", "japanese", "korean", "russian"
+        };
+
+        for (String lang : languages) {
+            saveResourceIfMissing("Lang/" + lang + ".yml");
         }
-
-        // Load or create English.yml
-        loadLanguageFile("English");
-
-        // Load or create German.yml
-        loadLanguageFile("Germany");
-
-        // Load or create French.yml
-        loadLanguageFile("French");
-
-        // Load or create Spanish.yml
-        loadLanguageFile("Spanish");
-
-        // Load or create Italian.yml
-        loadLanguageFile("Italian");
-
-        // Load or create Chinese.yml
-        loadLanguageFile("Chinese");
-
-        // Load or create Japanese.yml
-        loadLanguageFile("Japanese");
-
-        // Load or create Korean.yml
-        loadLanguageFile("Korean");
-
-        // Load or create Russian.yml
-        loadLanguageFile("Russian");
     }
 
-    private void loadLanguageFile(String language) {
-        File langDir = new File(plugin.getDataFolder(), "Lang");
-        File langFile = new File(langDir, language + ".yml");
+    private void saveResourceIfMissing(String resourcePath) {
+        File file = new File(plugin.getDataFolder(), resourcePath);
+        if (!file.exists()) {
+            try {
+                // Create parent directories if needed
+                File parent = file.getParentFile();
+                if (!parent.exists()) parent.mkdirs();
 
-        if (!langFile.exists()) {
-            plugin.saveResource("Lang/" + language + ".yml", false); // Copy from resources if not exists
+                // Copy from JAR resources
+                try (InputStream in = plugin.getResource(resourcePath)) {
+                    if (in != null) {
+                        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        plugin.getLogger().info("Created default: " + resourcePath);
+                    } else {
+                        plugin.getLogger().warning("Missing resource: " + resourcePath);
+                    }
+                }
+            } catch (IOException e) {
+                plugin.getLogger().severe("Failed to create " + resourcePath + ": " + e.getMessage());
+            }
         }
     }
 
     public YamlConfiguration getDataLangConfig() {
-        File dataLangFile = new File(plugin.getDataFolder(), "Lang/DataLang.yml");
-        return YamlConfiguration.loadConfiguration(dataLangFile);
-    }
-
-    public YamlConfiguration getLanguageConfig(String language) {
-        File langFile = new File(plugin.getDataFolder(), "Lang/" + language + ".yml");
-        return YamlConfiguration.loadConfiguration(langFile);
+        return YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "Lang/DataLang.yml"));
     }
 }

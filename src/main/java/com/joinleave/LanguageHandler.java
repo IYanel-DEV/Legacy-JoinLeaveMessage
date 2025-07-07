@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class LanguageHandler {
 
@@ -16,62 +17,74 @@ public class LanguageHandler {
     public LanguageHandler(JoinleaveMessage plugin) {
         this.plugin = plugin;
         this.languageFiles = new HashMap<>();
+        initializeLanguages();
+    }
 
-        loadLanguageFile("english");
-        loadLanguageFile("germany");
-        loadLanguageFile("french");
-        loadLanguageFile("spanish");
-        loadLanguageFile("italian");
-        loadLanguageFile("chinese");
-        loadLanguageFile("japanese");
-        loadLanguageFile("korean");
-        loadLanguageFile("russian");
+    private void initializeLanguages() {
+        String[] languages = {
+                "english", "germany", "french", "spanish", "italian",
+                "chinese", "japanese", "korean", "russian"
+        };
+
+        for (String lang : languages) {
+            loadLanguageFile(lang);
+        }
     }
 
     private void loadLanguageFile(String language) {
-        File langFile = new File(plugin.getDataFolder(), "Lang/" + language.toLowerCase() + ".yml");
-        if (!langFile.exists()) {
-            plugin.saveResource("Lang/" + language.toLowerCase() + ".yml", false);
+        try {
+            File langFile = new File(plugin.getDataFolder(), "Lang/" + language + ".yml");
+            languageFiles.put(language, YamlConfiguration.loadConfiguration(langFile));
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.SEVERE, "Error loading language: " + language, e);
         }
-        YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(langFile);
-        languageFiles.put(language.toLowerCase(), langConfig);
     }
 
     public String getMessage(Player player, String key) {
         String playerLanguage = getPlayerLanguage(player);
-        YamlConfiguration langConfig = languageFiles.get(playerLanguage.toLowerCase());
+        YamlConfiguration langConfig = languageFiles.get(playerLanguage);
+
+        // Try player's language first
         if (langConfig != null) {
             String message = langConfig.getString(key);
-            if (message != null) {
+            if (message != null && !message.isEmpty()) {
                 return ChatColor.translateAlternateColorCodes('&', message);
-            } else {
-                plugin.getLogger().warning("Message with key '" + key + "' not found in language file for " + playerLanguage);
-                return ChatColor.RED + "Message not found"; // Fallback message
             }
-        } else {
-            plugin.getLogger().warning("Language file not found for language " + playerLanguage);
-            return ChatColor.RED + "Language file not found"; // Fallback message
         }
+
+        // Fallback 1: Try English
+        if (!"english".equals(playerLanguage)) {
+            YamlConfiguration englishConfig = languageFiles.get("english");
+            if (englishConfig != null) {
+                String message = englishConfig.getString(key);
+                if (message != null && !message.isEmpty()) {
+                    return ChatColor.translateAlternateColorCodes('&', message);
+                }
+            }
+        }
+
+        // Fallback 2: Try any available language
+        for (YamlConfiguration config : languageFiles.values()) {
+            String message = config.getString(key);
+            if (message != null && !message.isEmpty()) {
+                return ChatColor.translateAlternateColorCodes('&', message);
+            }
+        }
+
+        // Final fallback
+        return ChatColor.RED + "[" + key + "]";
     }
 
     private String getPlayerLanguage(Player player) {
-        if (player == null) {
-            return "english"; // Default to English if player is null (for console commands)
+        if (player == null) return "english";
+
+        try {
+            File dataLangFile = new File(plugin.getDataFolder(), "Lang/DataLang.yml");
+            YamlConfiguration dataLangConfig = YamlConfiguration.loadConfiguration(dataLangFile);
+            String playerUUID = player.getUniqueId().toString();
+            return dataLangConfig.getString(playerUUID + ".Language", "english").toLowerCase();
+        } catch (Exception e) {
+            return "english";
         }
-
-        File dataLangFile = new File(plugin.getDataFolder(), "Lang/DataLang.yml");
-        YamlConfiguration dataLangConfig = YamlConfiguration.loadConfiguration(dataLangFile);
-
-        String playerUUID = player.getUniqueId().toString();
-        String language = dataLangConfig.getString(playerUUID + ".Language", "english").toLowerCase();
-
-
-        // Check if the loaded language file exists in our set of language files
-        if (!languageFiles.containsKey(language)) {
-            plugin.getLogger().warning("Language file '" + language + "' specified in DataLang.yml not found, defaulting to English.");
-            return "english"; // Default to English if specified language file does not exist
-        }
-
-        return language;
     }
 }

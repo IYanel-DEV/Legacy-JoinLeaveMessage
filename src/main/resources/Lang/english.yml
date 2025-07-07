@@ -1,4 +1,4 @@
-#English.yml
+#english.yml
 
 # InfoHandler
 join_leave_info:
@@ -72,6 +72,7 @@ help:
   openGui: "&d  /njm gui&5 - To open the GUI"
   viewInfo: "&d  /njm info [player]&5 - To See Another player's Info"
   reloadPlugin: "&d  /njm reload&5 - Reload the plugin"
+  setLanguage: "Use /njm language to set your language"
   currentJoinMessage: "&aYour current Join Message: "
   currentLeaveMessage: "&aYour current Leave Message: "
   usingDefaultMessage: "&7Using the default message"

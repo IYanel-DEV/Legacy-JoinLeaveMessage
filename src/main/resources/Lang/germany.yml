@@ -6,7 +6,7 @@ join_leave_info:
   last_leave_change: "&5Letzte Änderung der Austrittsnachricht: &r%lastLeaveChange%"
 
 
-# Germany.yml
+# germany.yml
 no_permission: "&cDu hast keine Berechtigung, die %type%-Nachrichten festzulegen."
 set_success: "&aDeine %type%-Nachricht wurde erfolgreich festgelegt."
 invalid_type: "&cUngültiger Nachrichtentyp. Verwende 'join' oder 'leave'."
@@ -63,6 +63,7 @@ help:
   openGui: "&d  /njm gui&5 - Um das GUI zu öffnen"
   viewInfo: "&d  /njm info [spieler]&5 - Um die Informationen eines anderen Spielers zu sehen"
   reloadPlugin: "&d  /njm reload&5 - Lade das Plugin neu"
+  setLanguage: "Verwende /njm language, um deine Sprache einzustellen"
   currentJoinMessage: "&aDeine aktuelle Beitrittsnachricht: "
   currentLeaveMessage: "&aDeine aktuelle Verlassen-Nachricht: "
   usingDefaultMessage: "&7Verwendet die Standardnachricht"

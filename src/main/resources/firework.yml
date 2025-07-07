@@ -3,7 +3,7 @@
 fireworks:
   # Specifies whether the firework display is enabled or disabled.
   # Set to true to enable the firework display, or false to disable it.
-  enabled: true
+  enabled: false
 
   # Specifies the type of firework effect to be used.
   # Available options: BALL, BALL_LARGE, BURST, CREEPER, STAR
